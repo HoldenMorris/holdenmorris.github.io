@@ -145,8 +145,11 @@ export class PortfolioNav extends LitElement {
     );
 
     requestAnimationFrame(() => {
-      document.querySelectorAll('section[id]').forEach((section) => {
-        this._sectionObserver.observe(section);
+      const appEl = document.querySelector('portfolio-app');
+      const root = appEl?.shadowRoot ?? document;
+      ['hero', 'about', 'skills', 'projects', 'experience', 'contact'].forEach((id) => {
+        const el = root.getElementById(id);
+        if (el) this._sectionObserver.observe(el);
       });
     });
   }
@@ -164,10 +167,15 @@ export class PortfolioNav extends LitElement {
     });
   }
 
+  _findById(id) {
+    const appEl = document.querySelector('portfolio-app');
+    return appEl?.shadowRoot?.getElementById(id) ?? document.getElementById(id);
+  }
+
   _handleNavClick(e) {
     e.preventDefault();
     const targetId = e.currentTarget.getAttribute('href').substring(1);
-    const target = document.getElementById(targetId);
+    const target = this._findById(targetId);
     if (target) {
       const navHeight = 64;
       const pos = target.getBoundingClientRect().top + window.scrollY - navHeight;

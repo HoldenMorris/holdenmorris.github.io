@@ -23,12 +23,12 @@ export class PortfolioApp extends LitElement {
     return html`
       <portfolio-nav></portfolio-nav>
       <main>
-        <portfolio-hero></portfolio-hero>
-        <portfolio-about></portfolio-about>
-        <portfolio-skills></portfolio-skills>
-        <portfolio-projects></portfolio-projects>
-        <portfolio-experience></portfolio-experience>
-        <portfolio-contact></portfolio-contact>
+        <portfolio-hero id="hero"></portfolio-hero>
+        <portfolio-about id="about"></portfolio-about>
+        <portfolio-skills id="skills"></portfolio-skills>
+        <portfolio-projects id="projects"></portfolio-projects>
+        <portfolio-experience id="experience"></portfolio-experience>
+        <portfolio-contact id="contact"></portfolio-contact>
       </main>
       <portfolio-footer></portfolio-footer>
     `;

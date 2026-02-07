@@ -205,7 +205,8 @@ export class PortfolioHero extends LitElement {
   }
 
   _scrollToProjects() {
-    const target = document.getElementById('projects');
+    const appEl = document.querySelector('portfolio-app');
+    const target = appEl?.shadowRoot?.getElementById('projects') ?? document.getElementById('projects');
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
