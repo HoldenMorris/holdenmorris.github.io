@@ -38,10 +38,10 @@ A modern, visually striking personal portfolio for Holden Morris — a software 
 
 `PROJECT.MD` Track any changes to the scope of the project or changes to the tech stack.
 
-`docs/TODO.md` tracks bugs, open items, and planned work.
-When completing a task, fixing a bug, or discovering new work, update `docs/TODO.md` **Before AND After doing work** to reflect the current state.
+`ai/TODO.md` tracks bugs, open items, and planned work.
+When completing a task, fixing a bug, or discovering new work, update `ai/TODO.md` **Before AND After doing work** to reflect the current state.
 
-`docs/plans/{FEATURE NAME}.md` Once a PLAN is devised added to the TODO file Features section and save the plan in the folder.
+`ai/plans/{FEATURE NAME}.md` Once a PLAN is devised added to the TODO file Features section and save the plan in the folder.
 
 ## Tech Stack
 
@@ -64,7 +64,7 @@ When completing a task, fixing a bug, or discovering new work, update `docs/TODO
 
 - **Remote Access**: Uses SSH for repository access
   (`git@github.com:HoldenMorris/HoldenMorris.github.io`)
-- **Deployment**: GitHub Pages serves from the `main` branch directly
+- **Deployment**: GitHub Pages serves from the `/docs` folder on the `main` branch
 - **Commits**: Follow conventional commits
   (e.g., `feat:`, `fix:`, `refactor:`, `docs:`)
 - **Pushing**: Ensure SSH keys are configured before pushing changes
@@ -72,7 +72,7 @@ When completing a task, fixing a bug, or discovering new work, update `docs/TODO
 ## Commands
 
 - `npm run dev` - start dev server (port 5173)
-- `npm run build` - production build to `dist/`
+- `npm run build` - production build to `docs/`
 - `npm run preview` - preview production build
 - `npm test` - run tests once (vitest)
 - `npm run test:watch` - run tests in watch mode
