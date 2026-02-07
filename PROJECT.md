@@ -64,6 +64,7 @@ When completing a task, fixing a bug, or discovering new work, update `docs/TODO
 
 - **Remote Access**: Uses SSH for repository access
   (`git@github.com:HoldenMorris/HoldenMorris.github.io`)
+- **Deployment**: GitHub Pages serves from the `main` branch directly
 - **Commits**: Follow conventional commits
   (e.g., `feat:`, `fix:`, `refactor:`, `docs:`)
 - **Pushing**: Ensure SSH keys are configured before pushing changes

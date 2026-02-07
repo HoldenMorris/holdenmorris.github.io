@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Personal portfolio website for Holden Morris",
   "scripts": {
-    "setup:icons": "mkdir -p public/shoelace/assets && cp -r node_modules/@shoelace-style/shoelace/dist/assets/icons public/shoelace/assets/",
+    "setup:icons": "mkdir -p public/shoelace/assets/icons && for icon in arrow-down box-arrow-up-right building calendar3 chevron-down code-slash cpu diagram-3 envelope geo-alt github layout-text-window linkedin list server terminal; do cp node_modules/@shoelace-style/shoelace/dist/assets/icons/$icon.svg public/shoelace/assets/icons/ 2>/dev/null; done",
     "dev": "npm run setup:icons && vite",
     "build": "npm run setup:icons && vite build",
     "preview": "vite preview",
