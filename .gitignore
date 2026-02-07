@@ -1,5 +1,6 @@
 node_modules/
 dist/
+public/shoelace/
 .DS_Store
 *.local
 .env

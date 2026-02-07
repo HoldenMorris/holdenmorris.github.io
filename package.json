@@ -5,8 +5,9 @@
   "type": "module",
   "description": "Personal portfolio website for Holden Morris",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "setup:icons": "mkdir -p public/shoelace/assets && cp -r node_modules/@shoelace-style/shoelace/dist/assets/icons public/shoelace/assets/",
+    "dev": "npm run setup:icons && vite",
+    "build": "npm run setup:icons && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"

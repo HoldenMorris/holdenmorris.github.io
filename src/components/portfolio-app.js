@@ -1,5 +1,14 @@
 import { LitElement, html, css } from 'lit';
 
+import './portfolio-nav.js';
+import './portfolio-hero.js';
+import './portfolio-about.js';
+import './portfolio-skills.js';
+import './portfolio-projects.js';
+import './portfolio-experience.js';
+import './portfolio-contact.js';
+import './portfolio-footer.js';
+
 export class PortfolioApp extends LitElement {
   static styles = css`
     :host {
@@ -8,46 +17,20 @@ export class PortfolioApp extends LitElement {
       color: var(--text-primary);
       background: var(--bg-primary);
     }
-
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .hero {
-      min-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      font-weight: 800;
-      margin: 0;
-      line-height: 1.1;
-    }
-
-    .hero .tagline {
-      font-size: clamp(1rem, 2.5vw, 1.5rem);
-      color: var(--text-secondary);
-      margin-top: 1rem;
-    }
-
-    .hero .accent {
-      color: var(--accent);
-    }
   `;
 
   render() {
     return html`
+      <portfolio-nav></portfolio-nav>
       <main>
-        <section class="hero">
-          <h1>Holden <span class="accent">Morris</span></h1>
-          <p class="tagline">Software Developer — coding since 1984</p>
-        </section>
+        <portfolio-hero></portfolio-hero>
+        <portfolio-about></portfolio-about>
+        <portfolio-skills></portfolio-skills>
+        <portfolio-projects></portfolio-projects>
+        <portfolio-experience></portfolio-experience>
+        <portfolio-contact></portfolio-contact>
       </main>
+      <portfolio-footer></portfolio-footer>
     `;
   }
 }
