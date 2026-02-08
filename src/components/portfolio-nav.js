@@ -40,10 +40,11 @@ export class PortfolioNav extends LitElement {
     }
 
     nav.scrolled {
-      background: rgba(10, 10, 15, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(7, 7, 14, 0.82);
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
       border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 20px rgba(15, 240, 252, 0.05);
     }
 
     .nav-inner {
@@ -61,10 +62,29 @@ export class PortfolioNav extends LitElement {
     }
 
     .monogram {
-      font-family: var(--font-mono);
+      font-family: var(--font-tech);
       font-weight: 700;
       font-size: 1.2rem;
       color: var(--accent);
+      text-shadow:
+        0 0 6px rgba(15, 240, 252, 0.6),
+        0 0 14px rgba(15, 240, 252, 0.3);
+      letter-spacing: 0.15em;
+      animation: neonFlicker 4s ease-in-out infinite;
+    }
+
+    @keyframes neonFlicker {
+      0%   { opacity: 1; }
+      4%   { opacity: 0.9; }
+      6%   { opacity: 1; }
+      7%   { opacity: 0.85; }
+      8%   { opacity: 1; }
+      48%  { opacity: 1; }
+      50%  { opacity: 0.92; }
+      52%  { opacity: 1; }
+      97%  { opacity: 1; }
+      98%  { opacity: 0.88; }
+      100% { opacity: 1; }
     }
 
     .nav-links {
@@ -75,19 +95,45 @@ export class PortfolioNav extends LitElement {
     .nav-links a {
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-family: var(--font-tech);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       padding: var(--space-1) var(--space-2);
       border-radius: var(--radius-sm);
-      transition: color var(--transition-fast), background var(--transition-fast);
+      transition: color var(--transition-fast), text-shadow var(--transition-fast);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      box-shadow: 0 0 6px rgba(15, 240, 252, 0.6);
+      transition: width var(--transition-fast), left var(--transition-fast);
     }
 
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--accent);
+      text-shadow: 0 0 8px rgba(15, 240, 252, 0.4);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 60%;
+      left: 20%;
     }
 
     .mobile-menu {
       display: none;
+      color: var(--accent);
+      font-size: 1.6rem;
     }
 
     sl-drawer::part(body) {
@@ -95,19 +141,30 @@ export class PortfolioNav extends LitElement {
       flex-direction: column;
       gap: var(--space-2);
       padding: var(--space-4);
+      background: var(--bg-secondary);
+    }
+
+    sl-drawer::part(panel) {
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
     }
 
     .drawer-link {
       color: var(--text-primary);
       text-decoration: none;
-      font-size: 1.1rem;
+      font-family: var(--font-tech);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       padding: var(--space-2);
       border-radius: var(--radius-sm);
-      transition: color var(--transition-fast);
+      transition: color var(--transition-fast), text-shadow var(--transition-fast);
+      border-bottom: 1px solid var(--border);
     }
 
     .drawer-link:hover {
       color: var(--accent);
+      text-shadow: 0 0 8px rgba(15, 240, 252, 0.4);
     }
 
     @media (max-width: 768px) {

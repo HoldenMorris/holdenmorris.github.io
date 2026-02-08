@@ -21,13 +21,24 @@ export class PortfolioAbout extends RevealMixin(LitElement) {
     }
 
     .section-heading {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
       margin-bottom: var(--space-6);
+      color: var(--text-bright, #eeeef6);
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px rgba(15, 240, 252, 0.6),
+        0 0 25px rgba(15, 240, 252, 0.25);
     }
 
     .heading-accent {
-      color: var(--accent);
-      font-family: var(--font-mono);
+      color: var(--accent2);
+      font-family: var(--font-tech);
+      font-size: 0.6em;
+      vertical-align: middle;
+      text-shadow:
+        0 0 6px rgba(255, 20, 147, 0.6),
+        0 0 14px rgba(255, 20, 147, 0.2);
     }
 
     .about-grid {
@@ -50,10 +61,12 @@ export class PortfolioAbout extends RevealMixin(LitElement) {
       gap: var(--space-1);
       font-size: 0.95rem;
       color: var(--text-secondary);
+      font-family: var(--font-mono);
     }
 
     .location sl-icon {
       color: var(--accent);
+      text-shadow: 0 0 6px rgba(15, 240, 252, 0.4);
     }
 
     .about-stats {
@@ -70,7 +83,15 @@ export class PortfolioAbout extends RevealMixin(LitElement) {
       text-align: center;
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color var(--transition-normal), box-shadow var(--transition-normal);
+      position: relative;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(15, 240, 252, 0.3);
+      box-shadow:
+        0 0 12px rgba(15, 240, 252, 0.1),
+        0 0 30px rgba(15, 240, 252, 0.05);
     }
 
     :host(.revealed) .stat-card {
@@ -86,22 +107,28 @@ export class PortfolioAbout extends RevealMixin(LitElement) {
       font-size: 3rem;
       font-weight: 800;
       color: var(--accent);
-      font-family: var(--font-mono);
+      font-family: var(--font-tech);
       line-height: 1;
+      text-shadow:
+        0 0 6px rgba(15, 240, 252, 0.5),
+        0 0 18px rgba(15, 240, 252, 0.2);
     }
 
     .stat-suffix {
       font-size: 2rem;
       font-weight: 800;
       color: var(--accent);
-      font-family: var(--font-mono);
+      font-family: var(--font-tech);
     }
 
     .stat-label {
       display: block;
       color: var(--text-secondary);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       margin-top: var(--space-1);
+      font-family: var(--font-tech);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
     @media (max-width: 768px) {

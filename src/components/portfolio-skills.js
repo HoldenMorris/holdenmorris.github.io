@@ -23,13 +23,24 @@ export class PortfolioSkills extends RevealMixin(LitElement) {
     }
 
     .section-heading {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
       margin-bottom: var(--space-6);
+      color: var(--text-bright, #eeeef6);
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px rgba(15, 240, 252, 0.6),
+        0 0 25px rgba(15, 240, 252, 0.25);
     }
 
     .heading-accent {
-      color: var(--accent);
-      font-family: var(--font-mono);
+      color: var(--accent2);
+      font-family: var(--font-tech);
+      font-size: 0.6em;
+      vertical-align: middle;
+      text-shadow:
+        0 0 6px rgba(255, 20, 147, 0.6),
+        0 0 14px rgba(255, 20, 147, 0.2);
     }
 
     .skills-grid {
@@ -53,9 +64,11 @@ export class PortfolioSkills extends RevealMixin(LitElement) {
     :host(.revealed) .skill-category:nth-child(6) { transition-delay: 500ms; }
 
     .category-label {
-      font-family: var(--font-mono);
+      font-family: var(--font-tech);
       color: var(--text-secondary);
-      font-size: 0.95rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       margin-bottom: var(--space-2);
       display: flex;
       align-items: center;
@@ -64,6 +77,7 @@ export class PortfolioSkills extends RevealMixin(LitElement) {
 
     .category-label sl-icon {
       color: var(--accent);
+      text-shadow: 0 0 6px rgba(15, 240, 252, 0.4);
     }
 
     .skill-tags {
@@ -72,14 +86,30 @@ export class PortfolioSkills extends RevealMixin(LitElement) {
       gap: var(--space-1);
     }
 
+    /* Neon-outlined pills instead of filled badges */
     sl-tag {
       cursor: default;
       transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     }
 
+    sl-tag::part(base) {
+      background: transparent;
+      border: 1px solid rgba(15, 240, 252, 0.3);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
     sl-tag:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+    }
+
+    sl-tag:hover::part(base) {
+      border-color: var(--accent);
+      box-shadow:
+        0 0 6px rgba(15, 240, 252, 0.3),
+        0 0 14px rgba(15, 240, 252, 0.1);
+      background: rgba(15, 240, 252, 0.05);
     }
 
     .proficiency-dot {
@@ -88,7 +118,7 @@ export class PortfolioSkills extends RevealMixin(LitElement) {
       height: 6px;
       border-radius: 50%;
       margin-left: 6px;
-      background: var(--accent);
+      background: var(--accent2);
       opacity: var(--prof);
     }
   `;

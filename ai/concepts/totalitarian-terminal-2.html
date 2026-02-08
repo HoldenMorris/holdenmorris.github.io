@@ -1,0 +1,422 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Totalitarian Terminal</title>
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        :root {
+          --terminal-green: #00ff41;
+          --terminal-bg: #0d0d0d;
+          --terminal-dim: #008f11;
+          --scanline: rgba(0, 0, 0, 0.5);
+        }
+        .export-wrapper {
+          margin: 0;
+          padding: 0;
+          background-color: var(--background);
+          color: var(--foreground);
+          font-family: "Courier New", Courier, monospace;
+          overflow: hidden;
+          height: 100vh;
+          width: 100vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      </style>
+      <style id="crt-effects">
+        .crt-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 10;
+          background:
+            linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+            linear-gradient(
+              90deg,
+              rgba(255, 0, 0, 0.06),
+              rgba(0, 255, 0, 0.02),
+              rgba(0, 0, 255, 0.06)
+            );
+          background-size:
+            100% 4px,
+            6px 100%;
+        }
+        .vignette {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 20;
+          background: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 0) 60%,
+            rgba(0, 0, 0, 0.8) 100%
+          );
+        }
+        .background-layer {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          opacity: 0.3;
+        }
+        .background-layer img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      </style>
+      <style id="layout-styles">
+        .main-container {
+          position: relative;
+          z-index: 5;
+          width: 100%;
+          max-width: 1000px;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+        }
+        .page-header {
+          text-align: center;
+          text-transform: uppercase;
+          letter-spacing: 4px;
+          margin-bottom: 16px;
+          border-bottom: 2px solid var(--terminal-dim);
+          padding-bottom: 16px;
+        }
+        .page-title {
+          font-size: 32px;
+          font-weight: 900;
+          color: var(--terminal-green);
+          text-shadow: 0 0 10px var(--terminal-dim);
+          margin: 0;
+        }
+        .page-subtitle {
+          font-size: 14px;
+          color: var(--terminal-dim);
+          margin-top: 8px;
+          font-weight: bold;
+        }
+      </style>
+      <style id="terminal-styles">
+        .terminal-window {
+          background: rgba(10, 10, 10, 0.95);
+          border: 2px solid var(--terminal-dim);
+          box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+          border-radius: 4px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 600px;
+        }
+        .terminal-bar {
+          background: var(--terminal-dim);
+          color: #000;
+          padding: 8px 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-weight: bold;
+          font-size: 14px;
+          text-transform: uppercase;
+        }
+        .terminal-controls {
+          display: flex;
+          gap: 8px;
+        }
+        .control-dot {
+          width: 12px;
+          height: 12px;
+          background: #000;
+          border-radius: 50%;
+          opacity: 0.5;
+        }
+        .terminal-content {
+          padding: 24px;
+          flex: 1;
+          overflow-y: auto;
+          color: var(--terminal-green);
+          font-size: 16px;
+          line-height: 1.6;
+        }
+        .line {
+          display: flex;
+          margin-bottom: 4px;
+        }
+        .line.spacer {
+          height: 16px;
+        }
+        .prompt {
+          margin-right: 12px;
+          color: var(--terminal-dim);
+          user-select: none;
+        }
+        .cursor {
+          display: inline-block;
+          width: 10px;
+          height: 20px;
+          background: var(--terminal-green);
+          margin-left: 8px;
+          animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0;
+          }
+        }
+        .highlight-text {
+          color: #fff;
+          font-weight: bold;
+          background: var(--terminal-dim);
+          padding: 0 4px;
+        }
+        .project-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 16px;
+          margin-top: 24px;
+          margin-bottom: 24px;
+        }
+        .project-card {
+          border: 1px solid var(--terminal-dim);
+          padding: 16px;
+          cursor: pointer;
+          transition: all 0.2s;
+          background: rgba(0, 20, 0, 0.5);
+        }
+        .project-card:hover {
+          background: rgba(0, 255, 65, 0.1);
+          border-color: var(--terminal-green);
+        }
+        .project-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+          border-bottom: 1px dashed var(--terminal-dim);
+          padding-bottom: 8px;
+        }
+        .folder-icon {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--terminal-green);
+        }
+        .project-name {
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        .project-meta {
+          font-size: 12px;
+          color: var(--terminal-dim);
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .status-badge {
+          display: inline-block;
+          padding: 2px 6px;
+          font-size: 10px;
+          border: 1px solid var(--terminal-green);
+          text-transform: uppercase;
+          align-self: flex-start;
+          margin-top: 8px;
+        }
+        .status-badge.locked {
+          border-color: #ff3333;
+          color: #ff3333;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="crt-overlay"></div>
+      <div class="vignette"></div>
+
+      <div class="background-layer">
+        <img
+          src="https://storage.googleapis.com/banani-generated-images/generated-images/0ef3b291-6148-41bd-b646-5ac27373a855.jpg"
+          alt="Matrix Code Background"
+          data-aspect-ratio="16:9"
+          data-query="matrix digital code rain green on black screen abstract technology"
+        />
+      </div>
+
+      <div class="main-container">
+        <header class="page-header">
+          <h1 class="page-title">SECTOR_7_TERMINAL</h1>
+          <div class="page-subtitle">
+            AUTHORIZED PERSONNEL ONLY // SURVEILLANCE ACTIVE
+          </div>
+        </header>
+
+        <div class="terminal-window">
+          <div class="terminal-bar">
+            <span>root@mainframe: /secure/projects</span>
+            <div class="terminal-controls">
+              <div class="control-dot"></div>
+              <div class="control-dot"></div>
+              <div class="control-dot"></div>
+            </div>
+          </div>
+
+          <div class="terminal-content">
+            <div class="line">
+              System initialization... <span style="color: #fff">COMPLETE</span>
+            </div>
+            <div class="line">
+              Connecting to secure node...
+              <span style="color: #fff">ESTABLISHED (12ms)</span>
+            </div>
+            <div class="line">
+              Verifying biometric signature...
+              <span style="color: #fff">MATCHED</span>
+            </div>
+            <div class="line spacer"></div>
+            <div class="line">
+              Welcome, <span class="highlight-text">OPERATOR_9</span>.
+            </div>
+            <div class="line">
+              Last login: Today at 04:22:19 from IP 192.168.0.X
+            </div>
+            <div class="line spacer"></div>
+            <div class="line">
+              <span class="prompt">$</span> list_projects --all --status=active
+            </div>
+            <div class="line spacer"></div>
+
+            <div class="project-grid">
+              <!-- Project 1 -->
+              <div class="project-card" data-media-type="banani-button">
+                <div class="project-header">
+                  <div class="folder-icon">
+                    <iconify-icon
+                      icon="lucide:folder-lock"
+                      style="font-size: 18px"
+                    ></iconify-icon>
+                  </div>
+                  <span class="project-name">Alpha_Protocol</span>
+                </div>
+                <div class="project-meta">
+                  <span>ID: #882-19A</span>
+                  <span>Size: 420 TB</span>
+                </div>
+                <div class="status-badge">Active</div>
+              </div>
+
+              <!-- Project 2 -->
+              <div class="project-card" data-media-type="banani-button">
+                <div class="project-header">
+                  <div class="folder-icon">
+                    <iconify-icon
+                      icon="lucide:database"
+                      style="font-size: 18px"
+                    ></iconify-icon>
+                  </div>
+                  <span class="project-name">Neural_Net_V4</span>
+                </div>
+                <div class="project-meta">
+                  <span>ID: #110-44C</span>
+                  <span>Size: 1.2 PB</span>
+                </div>
+                <div class="status-badge">Training</div>
+              </div>
+
+              <!-- Project 3 -->
+              <div class="project-card" data-media-type="banani-button">
+                <div class="project-header">
+                  <div class="folder-icon">
+                    <iconify-icon
+                      icon="lucide:shield-alert"
+                      style="font-size: 18px"
+                    ></iconify-icon>
+                  </div>
+                  <span class="project-name">Project_Icarus</span>
+                </div>
+                <div class="project-meta">
+                  <span>ID: #999-XXX</span>
+                  <span>Size: Unknown</span>
+                </div>
+                <div class="status-badge locked">Classified</div>
+              </div>
+            </div>
+
+            <div class="line spacer"></div>
+            <div class="line">
+              <span class="prompt">root@mainframe:~/projects $</span>
+              <span>awaiting_input</span>
+              <span class="cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #04120a;
+      --foreground: #e6f8e6;
+      --border: #00000014;
+      --input: #06170c;
+      --primary: #00ff41;
+      --primary-foreground: #000000;
+      --secondary: #0c2a1a;
+      --secondary-foreground: #beeccb;
+      --muted: #0a1610;
+      --muted-foreground: #6b7a6c;
+      --success: #00ff41;
+      --success-foreground: #001204;
+      --accent: #ffd89b;
+      --accent-foreground: #2b1a00;
+      --destructive: #ff4d4f;
+      --destructive-foreground: #2b0000;
+      --warning: #ffb86b;
+      --warning-foreground: #3b2100;
+      --card: #06170c;
+      --card-foreground: #dff8e6;
+      --sidebar: #07120a;
+      --sidebar-foreground: #aeeab2;
+      --sidebar-primary: #083016;
+      --sidebar-primary-foreground: #e6ffe9;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Inter;
+    }
+  </style>
+</div>

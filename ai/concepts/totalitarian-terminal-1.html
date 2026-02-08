@@ -1,0 +1,529 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Totalitarian Terminal</title>
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        :root {
+          --matrix-green: #00ff41;
+          --matrix-dark: #0d110e;
+          --terminal-bg: #000000;
+          --rust-color: #5a3a2a;
+          --steel-color: #2b2b2b;
+        }
+        .export-wrapper {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          min-height: 100vh;
+          background-color: #000;
+          font-family: "Courier New", Courier, monospace;
+          color: var(--matrix-green);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        /* Background Layers */
+        .bg-layer {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          opacity: 0.3;
+        }
+
+        .bg-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .scanlines {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2)
+          );
+          background-size: 100% 4px;
+          pointer-events: none;
+          z-index: 20;
+        }
+
+        .vignette {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 0) 60%,
+            rgba(0, 0, 0, 0.8) 100%
+          );
+          pointer-events: none;
+          z-index: 21;
+        }
+
+        /* Main Frame */
+        .main-frame {
+          position: relative;
+          z-index: 10;
+          width: 90%;
+          max-width: 1200px;
+          height: 85vh;
+          background: var(--terminal-bg);
+          border: 20px solid var(--steel-color);
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 0 50px rgba(0, 255, 65, 0.1);
+          border-image: linear-gradient(
+              to bottom right,
+              #333,
+              #111,
+              #4a4a4a,
+              #222
+            )
+            1;
+        }
+
+        /* Industrial decorations on frame */
+        .bolt {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          background: #111;
+          border-radius: 50%;
+          border: 1px solid #555;
+          box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+          z-index: 12;
+        }
+        .bolt.tl {
+          top: -14px;
+          left: -14px;
+        }
+        .bolt.tr {
+          top: -14px;
+          right: -14px;
+        }
+        .bolt.bl {
+          bottom: -14px;
+          left: -14px;
+        }
+        .bolt.br {
+          bottom: -14px;
+          right: -14px;
+        }
+
+        /* Terminal Header */
+        .terminal-header {
+          background: var(--matrix-green);
+          color: #000;
+          padding: 8px 16px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: Impact, sans-serif;
+          font-size: 18px;
+        }
+
+        /* Terminal Body */
+        .terminal-body {
+          flex: 1;
+          padding: 32px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+
+        /* Grid Layout for Projects */
+        .projects-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 24px;
+          margin-top: 32px;
+        }
+
+        .project-card {
+          border: 1px solid var(--matrix-green);
+          padding: 16px;
+          background: rgba(0, 255, 65, 0.05);
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+
+        .project-header {
+          border-bottom: 1px solid var(--matrix-green);
+          padding-bottom: 8px;
+          margin-bottom: 12px;
+          font-weight: bold;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .status-badge {
+          background: var(--matrix-green);
+          color: black;
+          padding: 2px 6px;
+          font-size: 12px;
+          font-weight: bold;
+        }
+
+        .status-badge.locked {
+          background: transparent;
+          border: 1px solid var(--matrix-green);
+          color: var(--matrix-green);
+        }
+
+        .cmd-line {
+          display: flex;
+          gap: 12px;
+          margin-top: auto;
+          padding-top: 24px;
+          border-top: 1px dashed rgba(0, 255, 65, 0.3);
+          align-items: center;
+        }
+
+        .prompt {
+          color: #fff;
+          font-weight: bold;
+        }
+
+        .cursor {
+          width: 10px;
+          height: 20px;
+          background: var(--matrix-green);
+          display: inline-block;
+        }
+
+        .nav-tabs {
+          display: flex;
+          gap: 2px;
+          background: #111;
+          padding: 4px 4px 0 4px;
+        }
+
+        .nav-tab {
+          padding: 8px 16px;
+          background: #222;
+          color: #666;
+          border-top: 2px solid transparent;
+          cursor: pointer;
+          font-size: 12px;
+          text-transform: uppercase;
+        }
+
+        .nav-tab.active {
+          background: var(--terminal-bg);
+          color: var(--matrix-green);
+          border-top: 2px solid var(--matrix-green);
+        }
+
+        h1,
+        h2,
+        h3 {
+          margin: 0;
+          font-weight: normal;
+        }
+
+        .glitch-text {
+          text-shadow:
+            2px 0 #fff,
+            -2px 0 #0f0;
+        }
+
+        .data-row {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px dotted rgba(0, 255, 65, 0.3);
+          padding: 4px 0;
+          font-size: 14px;
+        }
+
+        .data-label {
+          opacity: 0.8;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+          width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #000;
+          border-left: 1px solid #333;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: var(--matrix-green);
+          border: 2px solid #000;
+        }
+      </style>
+    </head>
+    <body>
+      <!-- Background Atmosphere -->
+      <div class="bg-layer">
+        <img
+          src="https://storage.googleapis.com/banani-generated-images/generated-images/30536a9a-bd4b-4787-8d04-283be0d4c690.jpg"
+          class="bg-image"
+          alt="Matrix Code Background"
+          data-aspect-ratio="16:9"
+          data-query="matrix digital rain code dark green black background"
+        />
+      </div>
+
+      <div class="scanlines"></div>
+      <div class="vignette"></div>
+
+      <!-- Main Terminal Container -->
+      <div class="main-frame">
+        <!-- Decorative bolts -->
+        <div class="bolt tl"></div>
+        <div class="bolt tr"></div>
+        <div class="bolt bl"></div>
+        <div class="bolt br"></div>
+
+        <!-- Window Chrome -->
+        <div class="terminal-header">
+          <span>SYS.ROOT.ADMIN // V.19.30</span>
+          <span>SECURE CONNECTION: ESTABLISHED</span>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+          <div class="nav-tab active" data-media-type="banani-button">
+            /Main_Console
+          </div>
+          <div class="nav-tab" data-media-type="banani-button">
+            /Data_Archives
+          </div>
+          <div class="nav-tab" data-media-type="banani-button">
+            /Network_Map
+          </div>
+          <div class="nav-tab" data-media-type="banani-button">/Sys_Config</div>
+        </div>
+
+        <!-- Terminal Content -->
+        <div class="terminal-body">
+          <!-- Intro Text -->
+          <div>
+            <h1
+              style="
+                font-size: 32px;
+                font-family: Impact, sans-serif;
+                letter-spacing: 2px;
+                margin-bottom: 16px;
+                color: #fff;
+              "
+            >
+              WELCOME TO THE CONSTRUCT
+            </h1>
+            <p style="max-width: 600px; margin-bottom: 24px">
+              IDENTITY CONFIRMED. AUTHORIZATION LEVEL 5. ACCESSING MAINFRAME...
+              SUCCESS.
+              <br /><br />
+              WARNING: UNAUTHORIZED ACCESS ATTEMPTS WILL RESULT IN IMMEDIATE
+              TERMINATION OF CONNECTION AND DEPLOYMENT OF COUNTERMEASURES.
+            </p>
+          </div>
+
+          <!-- System Stats -->
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 16px;
+              border-top: 1px solid var(--matrix-green);
+              border-bottom: 1px solid var(--matrix-green);
+              padding: 16px 0;
+            "
+          >
+            <div>
+              <div style="font-size: 12px; opacity: 0.7; margin-bottom: 4px">
+                CPU LOAD
+              </div>
+              <div style="font-size: 24px; font-weight: bold">12%</div>
+            </div>
+            <div>
+              <div style="font-size: 12px; opacity: 0.7; margin-bottom: 4px">
+                MEMORY
+              </div>
+              <div style="font-size: 24px; font-weight: bold">64TB</div>
+            </div>
+            <div>
+              <div style="font-size: 12px; opacity: 0.7; margin-bottom: 4px">
+                NETWORK
+              </div>
+              <div style="font-size: 24px; font-weight: bold">SECURE</div>
+            </div>
+            <div>
+              <div style="font-size: 12px; opacity: 0.7; margin-bottom: 4px">
+                UPTIME
+              </div>
+              <div style="font-size: 24px; font-weight: bold">99.999%</div>
+            </div>
+          </div>
+
+          <!-- Projects Section -->
+          <div>
+            <h2
+              style="
+                font-size: 20px;
+                border-left: 4px solid #fff;
+                padding-left: 12px;
+                margin-bottom: 16px;
+              "
+            >
+              ACTIVE DIRECTORIES
+            </h2>
+
+            <div class="projects-grid">
+              <!-- Project 1 -->
+              <div class="project-card" data-media-type="banani-button">
+                <div class="project-header">
+                  <span>PROJ_NEBUCHADNEZZAR</span>
+                  <span class="status-badge">ONLINE</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Owner:</span>
+                  <span>Morpheus</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Status:</span>
+                  <span>Broadcasting</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Crew:</span>
+                  <span>7 Active</span>
+                </div>
+                <div style="margin-top: 12px; font-size: 12px">
+                  &gt; init_sequence_hovercraft.exe...
+                </div>
+              </div>
+
+              <!-- Project 2 -->
+              <div class="project-card" data-media-type="banani-button">
+                <div class="project-header">
+                  <span>PROJ_ZION_MAIN</span>
+                  <span class="status-badge locked">RESTRICTED</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Sector:</span>
+                  <span>Core-01</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Pop:</span>
+                  <span>250,000</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Def:</span>
+                  <span>Grid Level 9</span>
+                </div>
+                <div style="margin-top: 12px; font-size: 12px; color: #666">
+                  &gt; access_denied.log
+                </div>
+              </div>
+
+              <!-- Project 3 -->
+              <div class="project-card" data-media-type="banani-button">
+                <div class="project-header">
+                  <span>PROJ_ORACLE</span>
+                  <span class="status-badge">UNKNOWN</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Loc:</span>
+                  <span>Matrix [Node 5]</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Type:</span>
+                  <span>Sentient Program</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Risk:</span>
+                  <span>Variable</span>
+                </div>
+                <div style="margin-top: 12px; font-size: 12px">
+                  &gt; decrypt_cookie.bat...
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Command Line Area -->
+          <div class="cmd-line">
+            <span class="prompt">root@construct:~#</span>
+            <span>initiate_scan -target sector_7g --force</span>
+            <div class="cursor"></div>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #07100a;
+      --foreground: #e6eae8;
+      --border: #00000014;
+      --input: #0a1a12;
+      --primary: #00ff41;
+      --primary-foreground: #000000;
+      --secondary: #0f1f18;
+      --secondary-foreground: #bfecc6;
+      --muted: #051009;
+      --muted-foreground: #7a8b80;
+      --success: #00ff41;
+      --success-foreground: #001806;
+      --accent: #ffd89b;
+      --accent-foreground: #241200;
+      --destructive: #d94a2c;
+      --destructive-foreground: #2b0b07;
+      --warning: #ffb84d;
+      --warning-foreground: #2a1700;
+      --card: #07130c;
+      --card-foreground: #dff6e8;
+      --sidebar: #08120d;
+      --sidebar-foreground: #9ee6b8;
+      --sidebar-primary: #00220f;
+      --sidebar-primary-foreground: #00ff41;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Space Grotesk;
+    }
+  </style>
+</div>

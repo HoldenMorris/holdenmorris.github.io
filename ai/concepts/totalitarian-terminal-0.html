@@ -1,0 +1,397 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Totalitarian Terminal</title>
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        .export-wrapper {
+          margin: 0;
+          padding: 0;
+          background-color: #000000;
+          color: #00ff41;
+          overflow: hidden;
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          /* Utilizing system vars where possible, but overriding for specific theme requirements */
+          --terminal-green: #00ff41;
+          --terminal-bg: #0d0d0d;
+          --rust-border: #4a3b3b;
+        }
+      </style>
+      <style id="layout-styles">
+        .screen-wrapper {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #000;
+        }
+
+        /* Background Matrix Effect (Static) */
+        .matrix-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          opacity: 0.4;
+        }
+        .matrix-bg img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        /* CRT Scanline Overlay */
+        .crt-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 10;
+          background:
+            linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+            linear-gradient(
+              90deg,
+              rgba(255, 0, 0, 0.06),
+              rgba(0, 255, 0, 0.02),
+              rgba(0, 0, 255, 0.06)
+            );
+          background-size:
+            100% 4px,
+            3px 100%;
+          pointer-events: none;
+        }
+
+        /* Main Terminal Container */
+        .terminal-frame {
+          position: relative;
+          z-index: 5;
+          width: 90%;
+          max-width: 1000px;
+          height: 80vh;
+          background: #000;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 0 50px rgba(0, 255, 65, 0.1);
+        }
+
+        /* Rusted Border Simulation */
+        .rust-border {
+          position: absolute;
+          top: -10px;
+          left: -10px;
+          right: -10px;
+          bottom: -10px;
+          z-index: -1;
+          background: #2a2a2a;
+          border: 2px solid #3e3e3e;
+        }
+        .rust-texture {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0.6;
+          mix-blend-mode: overlay;
+        }
+        .rust-texture img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        /* Terminal Content */
+        .terminal-header {
+          border-bottom: 2px solid var(--terminal-green);
+          padding-bottom: 12px;
+          margin-bottom: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+        }
+
+        .terminal-title {
+          font-size: 32px;
+          text-transform: uppercase;
+          letter-spacing: 4px;
+          font-weight: 700;
+          color: #fff;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+          line-height: 1;
+        }
+
+        .terminal-meta {
+          font-size: 14px;
+          color: var(--terminal-green);
+          opacity: 0.8;
+          text-align: right;
+        }
+
+        .terminal-window {
+          flex: 1;
+          background: rgba(0, 20, 0, 0.9);
+          padding: 24px;
+          overflow-y: auto;
+          border: 1px solid rgba(0, 255, 65, 0.3);
+          font-size: 16px;
+          line-height: 1.6;
+        }
+
+        /* Code/Pre formatting */
+        pre {
+          margin: 0;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          color: var(--terminal-green);
+        }
+
+        .prompt {
+          color: #fff;
+          margin-right: 8px;
+        }
+
+        .output {
+          margin-bottom: 16px;
+          opacity: 0.9;
+        }
+
+        .highlight {
+          color: #fff;
+          font-weight: bold;
+        }
+
+        .cursor {
+          display: inline-block;
+          width: 10px;
+          height: 18px;
+          background: var(--terminal-green);
+          vertical-align: middle;
+          margin-left: 4px;
+        }
+
+        .grid-menu {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 16px;
+          margin-top: 32px;
+          padding-top: 24px;
+          border-top: 1px dashed rgba(0, 255, 65, 0.3);
+        }
+
+        .menu-item {
+          border: 1px solid var(--terminal-green);
+          padding: 12px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          background: rgba(0, 255, 65, 0.05);
+        }
+
+        .menu-item:hover {
+          /* No hover effects allowed per rules, static design only */
+        }
+
+        .status-bar {
+          margin-top: 16px;
+          display: flex;
+          justify-content: space-between;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          opacity: 0.7;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="screen-wrapper">
+        <!-- Background Layers -->
+        <div class="matrix-bg">
+          <img
+            data-aspect-ratio="16:9"
+            data-query="matrix digital code rain green characters on black background abstract"
+            alt="background"
+            src="https://storage.googleapis.com/banani-generated-images/generated-images/5994ef55-89a6-4666-ab53-037bcd12b87a.jpg"
+          />
+        </div>
+        <div class="crt-overlay"></div>
+
+        <!-- Main Terminal -->
+        <div class="terminal-frame">
+          <!-- Rust/Frame Graphics -->
+          <div class="rust-border">
+            <div class="rust-texture">
+              <img
+                data-aspect-ratio="1:1"
+                data-query="dark rusted industrial steel metal texture grunge"
+                alt="frame texture"
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/a3866526-c5e0-4424-9610-39e0ba92f478.jpg"
+              />
+            </div>
+          </div>
+
+          <div class="terminal-header">
+            <div class="terminal-title">Ministry_Terminal</div>
+            <div class="terminal-meta">
+              <div>SECURE CONNECTION: ENCRYPTED</div>
+              <div>IP: 192.168.0.X // NODE_42</div>
+            </div>
+          </div>
+
+          <div class="terminal-window">
+            <pre><span class="prompt">admin@mainframe:~$</span> init_sequence --auth-level=5
+<span class="output">&gt; VERIFYING BIOMETRICS... OK
+&gt; LOADING CORE MODULES... OK
+&gt; MOUNTING FILE SYSTEM... OK</span>
+
+<span class="prompt">admin@mainframe:~$</span> list_projects --status=active
+<span class="output">&gt; FOUND 4 DIRECTORIES</span>
+</pre>
+
+            <div class="grid-menu">
+              <div class="menu-item" data-media-type="banani-button">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <iconify-icon
+                    icon="lucide:folder-lock"
+                    style="font-size: 20px; color: #00ff41"
+                  ></iconify-icon>
+                </div>
+                <span>/PROJECT_ALPHA</span>
+              </div>
+              <div class="menu-item" data-media-type="banani-button">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <iconify-icon
+                    icon="lucide:database"
+                    style="font-size: 20px; color: #00ff41"
+                  ></iconify-icon>
+                </div>
+                <span>/DATA_ARCHIVE</span>
+              </div>
+              <div class="menu-item" data-media-type="banani-button">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <iconify-icon
+                    icon="lucide:shield-alert"
+                    style="font-size: 20px; color: #00ff41"
+                  ></iconify-icon>
+                </div>
+                <span>/SURVEILLANCE</span>
+              </div>
+              <div class="menu-item" data-media-type="banani-button">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <iconify-icon
+                    icon="lucide:radio"
+                    style="font-size: 20px; color: #00ff41"
+                  ></iconify-icon>
+                </div>
+                <span>/BROADCAST</span>
+              </div>
+            </div>
+
+            <br />
+            <pre><span class="prompt">admin@mainframe:~$</span> await_input<span class="cursor"></span></pre>
+          </div>
+
+          <div class="status-bar">
+            <span>RAM: 64TB / 128TB</span>
+            <span>CPU: 12%</span>
+            <span>UPTIME: 4392h 12m</span>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #04120a;
+      --foreground: #e6f8e6;
+      --border: #00000014;
+      --input: #06170c;
+      --primary: #00ff41;
+      --primary-foreground: #000000;
+      --secondary: #0c2a1a;
+      --secondary-foreground: #beeccb;
+      --muted: #0a1610;
+      --muted-foreground: #6b7a6c;
+      --success: #00ff41;
+      --success-foreground: #001204;
+      --accent: #ffd89b;
+      --accent-foreground: #2b1a00;
+      --destructive: #ff4d4f;
+      --destructive-foreground: #2b0000;
+      --warning: #ffb86b;
+      --warning-foreground: #3b2100;
+      --card: #06170c;
+      --card-foreground: #dff8e6;
+      --sidebar: #07120a;
+      --sidebar-foreground: #aeeab2;
+      --sidebar-primary: #083016;
+      --sidebar-primary-foreground: #e6ffe9;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Inter;
+    }
+  </style>
+</div>

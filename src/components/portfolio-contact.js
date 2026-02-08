@@ -21,13 +21,24 @@ export class PortfolioContact extends RevealMixin(LitElement) {
     }
 
     .section-heading {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
       margin-bottom: var(--space-3);
+      color: var(--text-bright, #eeeef6);
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px rgba(15, 240, 252, 0.6),
+        0 0 25px rgba(15, 240, 252, 0.25);
     }
 
     .heading-accent {
-      color: var(--accent);
-      font-family: var(--font-mono);
+      color: var(--accent2);
+      font-family: var(--font-tech);
+      font-size: 0.6em;
+      vertical-align: middle;
+      text-shadow:
+        0 0 6px rgba(255, 20, 147, 0.6),
+        0 0 14px rgba(255, 20, 147, 0.2);
     }
 
     .contact-intro {
@@ -57,6 +68,7 @@ export class PortfolioContact extends RevealMixin(LitElement) {
       min-width: 180px;
       opacity: 0;
       transform: scale(0.9);
+      position: relative;
     }
 
     :host(.revealed) .contact-card {
@@ -69,27 +81,36 @@ export class PortfolioContact extends RevealMixin(LitElement) {
     :host(.revealed) .contact-card:nth-child(3) { transition-delay: 200ms; }
 
     .contact-card:hover {
-      border-color: var(--accent);
+      border-color: rgba(15, 240, 252, 0.4);
       transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+      box-shadow:
+        0 0 12px rgba(15, 240, 252, 0.15),
+        0 0 30px rgba(15, 240, 252, 0.06),
+        0 8px 25px rgba(0, 0, 0, 0.3);
     }
 
     .contact-card:hover sl-icon {
       color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(15, 240, 252, 0.5));
     }
 
     .contact-card sl-icon {
       font-size: 2.5rem;
-      transition: color var(--transition-fast);
+      transition: color var(--transition-fast), filter var(--transition-fast);
+      color: var(--text-secondary);
     }
 
     .contact-label {
+      font-family: var(--font-tech);
       font-weight: 600;
       margin-top: var(--space-2);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .contact-handle {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-secondary);
       font-family: var(--font-mono);
     }

@@ -21,13 +21,24 @@ export class PortfolioExperience extends RevealMixin(LitElement) {
     }
 
     .section-heading {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
       margin-bottom: var(--space-6);
+      color: var(--text-bright, #eeeef6);
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px rgba(15, 240, 252, 0.6),
+        0 0 25px rgba(15, 240, 252, 0.25);
     }
 
     .heading-accent {
-      color: var(--accent);
-      font-family: var(--font-mono);
+      color: var(--accent2);
+      font-family: var(--font-tech);
+      font-size: 0.6em;
+      vertical-align: middle;
+      text-shadow:
+        0 0 6px rgba(255, 20, 147, 0.6),
+        0 0 14px rgba(255, 20, 147, 0.2);
     }
 
     .timeline {
@@ -65,15 +76,36 @@ export class PortfolioExperience extends RevealMixin(LitElement) {
       height: 14px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+      box-shadow:
+        0 0 6px rgba(15, 240, 252, 0.6),
+        0 0 16px rgba(15, 240, 252, 0.3),
+        0 0 30px rgba(15, 240, 252, 0.1);
       z-index: 1;
       flex-shrink: 0;
+      animation: neonPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes neonPulse {
+      0%, 100% {
+        box-shadow:
+          0 0 6px rgba(15, 240, 252, 0.5),
+          0 0 14px rgba(15, 240, 252, 0.2);
+      }
+      50% {
+        box-shadow:
+          0 0 10px rgba(15, 240, 252, 0.8),
+          0 0 28px rgba(15, 240, 252, 0.35);
+      }
     }
 
     .marker-line {
       width: 2px;
       flex: 1;
-      background: var(--border);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 240, 252, 0.4),
+        rgba(15, 240, 252, 0.05)
+      );
       margin-top: 4px;
     }
 
@@ -84,6 +116,7 @@ export class PortfolioExperience extends RevealMixin(LitElement) {
     .timeline-header h3 {
       font-size: 1.2rem;
       margin-bottom: var(--space-1);
+      color: var(--text-bright, #eeeef6);
     }
 
     .timeline-company,
@@ -94,12 +127,14 @@ export class PortfolioExperience extends RevealMixin(LitElement) {
       align-items: center;
       gap: 4px;
       margin-bottom: 2px;
+      font-family: var(--font-mono);
     }
 
     .timeline-company sl-icon,
     .timeline-period sl-icon {
       color: var(--accent);
       font-size: 0.85rem;
+      filter: drop-shadow(0 0 4px rgba(15, 240, 252, 0.4));
     }
 
     .timeline-desc {
@@ -130,6 +165,7 @@ export class PortfolioExperience extends RevealMixin(LitElement) {
       color: var(--accent);
       font-family: var(--font-mono);
       font-weight: 700;
+      text-shadow: 0 0 6px rgba(15, 240, 252, 0.4);
     }
 
     @media (max-width: 768px) {

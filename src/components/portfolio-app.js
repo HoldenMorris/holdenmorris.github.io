@@ -16,6 +16,30 @@ export class PortfolioApp extends LitElement {
       min-height: 100vh;
       color: var(--text-primary);
       background: var(--bg-primary);
+      position: relative;
+    }
+
+    /* CRT Scanline Overlay -- covers the entire app */
+    :host::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-scanline, 9999);
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.06) 2px,
+          rgba(0, 0, 0, 0.06) 4px
+        );
+      animation: scanlineScroll 0.4s linear infinite;
+    }
+
+    @keyframes scanlineScroll {
+      0%   { background-position: 0 0; }
+      100% { background-position: 0 4px; }
     }
   `;
 

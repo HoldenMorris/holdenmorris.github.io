@@ -6,6 +6,8 @@
 
 ## Features (Planned)
 
+- [ ] Create a new UI theme using the UI designer skill - see: [`ai/plans/Lit Portfolio_ Dark Wave Cyber Matrix.md`]
+- [ ] Look at some ideas from this GIT Repo: https://github.com/dev-sufyaan/Portfolio-Pitch-Black-Swiss like the hero section (Using Framer Motion and [https://www.framer.com/motion/] and Three.js [https://threejs.org/] )
 - [ ] Add email address to contact section (personal.js)
 - [ ] Add more projects to showcase
 - [ ] Light-mode toggle
@@ -24,24 +26,3 @@
 
 ## Done
 
-- [x] Initial project planning and PROJECT.md
-- [x] Install ui-designer plugin
-- [x] Project scaffolding (Vite + Lit + Shoelace setup)
-- [x] GitHub Pages deployment workflow (.github/workflows/deploy.yml)
-- [x] Initial git commit and push to HoldenMorris.github.io
-- [x] Shoelace setup (dark theme, icon base path, fonts)
-- [x] Data layer (personal, skills, experience, projects)
-- [x] Reveal mixin (IntersectionObserver scroll animations)
-- [x] Hero section with matrix rain canvas + typing effect
-- [x] Sticky frosted-glass nav with smooth scroll + mobile drawer
-- [x] About Me section with stat cards
-- [x] Skills & Tech categorized tag grid with proficiency tooltips
-- [x] Project Showcase with IDE-window-style cards
-- [x] Experience Timeline (git-log style)
-- [x] Contact / Links icon cards (GitHub, LinkedIn)
-- [x] Footer with "coding since 1984" tagline
-- [x] Dark-mode theming with CSS custom properties
-- [x] Mobile-responsive layout (768px breakpoint)
-- [x] Scroll-driven reveal animations (IntersectionObserver)
-- [x] Reduced motion support
-- [x] Production build verified (104 modules, no errors)

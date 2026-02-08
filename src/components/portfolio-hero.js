@@ -27,6 +27,7 @@ export class PortfolioHero extends LitElement {
       z-index: 0;
     }
 
+    /* Dark wave ambient gradient behind content */
     .hero-content {
       position: relative;
       z-index: 1;
@@ -42,9 +43,14 @@ export class PortfolioHero extends LitElement {
     .hero-content::before {
       content: '';
       position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(
+        circle,
+        rgba(15, 240, 252, 0.06) 0%,
+        rgba(70, 22, 89, 0.04) 40%,
+        transparent 70%
+      );
       top: 50%;
       left: 30%;
       transform: translate(-50%, -50%);
@@ -58,35 +64,76 @@ export class PortfolioHero extends LitElement {
       margin-bottom: var(--space-1);
       opacity: 0;
       animation: fadeSlideUp 0.5s 0.3s forwards;
+      text-shadow: 0 0 8px rgba(15, 240, 252, 0.5);
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 800;
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 9vw, 6.5rem);
+      font-weight: 700;
       line-height: 1.05;
       margin: 0;
+      color: var(--text-bright, #eeeef6);
+      text-shadow:
+        0 0 5px #fff,
+        0 0 12px rgba(15, 240, 252, 0.7),
+        0 0 35px rgba(15, 240, 252, 0.35),
+        0 0 70px rgba(15, 240, 252, 0.12);
+      animation: neonFlicker 4s ease-in-out infinite;
+    }
+
+    @keyframes neonFlicker {
+      0%   { opacity: 1; }
+      4%   { opacity: 0.9; }
+      6%   { opacity: 1; }
+      7%   { opacity: 0.85; }
+      8%   { opacity: 1; }
+      48%  { opacity: 1; }
+      50%  { opacity: 0.92; }
+      52%  { opacity: 1; }
+      97%  { opacity: 1; }
+      98%  { opacity: 0.88; }
+      100% { opacity: 1; }
     }
 
     .cursor {
       color: var(--accent);
       animation: blink 1s step-end infinite;
+      text-shadow: 0 0 8px rgba(15, 240, 252, 0.6);
+    }
+
+    @keyframes blink {
+      0%, 50%  { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
 
     .role {
-      font-family: var(--font-mono);
-      font-size: clamp(1.2rem, 3vw, 1.8rem);
-      color: var(--text-secondary);
-      margin-top: var(--space-1);
+      font-family: var(--font-tech);
+      font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+      color: var(--accent2, #ff1493);
+      margin-top: var(--space-2);
       min-height: 1.5em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 6px rgba(255, 20, 147, 0.6),
+        0 0 18px rgba(255, 20, 147, 0.25);
     }
 
     .tagline {
-      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-size: clamp(1rem, 2vw, 1.2rem);
       color: var(--text-secondary);
-      margin-top: var(--space-2);
+      margin-top: var(--space-3);
       opacity: 0;
       transition: opacity 0.6s ease, transform 0.6s ease;
       transform: translateY(10px);
+      max-width: 600px;
+      line-height: 1.7;
     }
 
     .tagline.visible {
@@ -114,8 +161,15 @@ export class PortfolioHero extends LitElement {
       bottom: var(--space-4);
       left: 50%;
       animation: bounce 2s infinite;
-      color: var(--text-secondary);
+      color: var(--accent);
       font-size: 1.5rem;
+      text-shadow: 0 0 8px rgba(15, 240, 252, 0.4);
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40%  { transform: translateX(-50%) translateY(-10px); }
+      60%  { transform: translateX(-50%) translateY(-5px); }
     }
   `;
 
@@ -157,14 +211,21 @@ export class PortfolioHero extends LitElement {
     const drops = new Array(columns).fill(1);
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+      ctx.fillStyle = 'rgba(7, 7, 14, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = 'rgba(99, 102, 241, 0.08)';
       ctx.font = `${fontSize}px JetBrains Mono, monospace`;
 
       for (let i = 0; i < drops.length; i++) {
         const char = chars[Math.floor(Math.random() * chars.length)];
+
+        /* Alternate between cyan and pink rain columns */
+        if (i % 7 === 0) {
+          ctx.fillStyle = 'rgba(255, 20, 147, 0.07)';
+        } else {
+          ctx.fillStyle = 'rgba(15, 240, 252, 0.08)';
+        }
+
         ctx.fillText(char, i * 20, drops[i] * fontSize);
 
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
@@ -221,7 +282,7 @@ export class PortfolioHero extends LitElement {
           <h1>${this._typedName}<span class="cursor">_</span></h1>
           <p class="role">${this._typedRole}</p>
           <p class="tagline ${this._showTagline ? 'visible' : ''}">
-            Building software since 1984 — forty-two years of turning ideas into running code.
+            Building software since 1984 -- forty-two years of turning ideas into running code.
           </p>
           <div class="hero-cta ${this._showCta ? 'visible' : ''}">
             <sl-button variant="primary" size="large" @click=${this._scrollToProjects}>
