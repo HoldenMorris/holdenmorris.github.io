@@ -1,0 +1,1018 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Neon Decay</title>
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        .export-wrapper {
+          margin: 0;
+          padding: 0;
+          font-family:
+            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+            Arial, sans-serif;
+          background-color: #000;
+          color: #fff;
+          overflow-x: hidden;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="neon-decay-container">
+        <!-- SVG Filter for Texture -->
+        <svg style="display: none">
+          <filter id="noiseFilter">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.8"
+              numOctaves="3"
+              stitchTiles="stitch"
+            ></feTurbulence>
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"
+            ></feColorMatrix>
+            <feBlend in="SourceGraphic" mode="multiply"></feBlend>
+          </filter>
+        </svg>
+
+        <!-- Background Layers -->
+        <div class="bg-base"></div>
+        <div class="bg-texture"></div>
+
+        <!-- Main Layout -->
+        <div class="layout-wrapper">
+          <!-- Sidebar / Terminal Strip -->
+          <aside class="sidebar">
+            <div class="brand-mark">
+              <div class="neon-logo">ND_SYS</div>
+              <div class="status-dot"></div>
+            </div>
+
+            <nav class="nav-menu">
+              <div class="nav-item active" data-media-type="banani-button">
+                <div class="icon-box">
+                  <iconify-icon
+                    icon="lucide:layout-grid"
+                    style="font-size: 20px; color: #0ff0fc"
+                  ></iconify-icon>
+                </div>
+                <span class="nav-label">DASHBOARD</span>
+              </div>
+              <div class="nav-item" data-media-type="banani-button">
+                <div class="icon-box">
+                  <iconify-icon
+                    icon="lucide:folder-git-2"
+                    style="font-size: 20px; color: rgba(255, 255, 255, 0.5)"
+                  ></iconify-icon>
+                </div>
+                <span class="nav-label">PROJECTS</span>
+              </div>
+              <div class="nav-item" data-media-type="banani-button">
+                <div class="icon-box">
+                  <iconify-icon
+                    icon="lucide:cpu"
+                    style="font-size: 20px; color: rgba(255, 255, 255, 0.5)"
+                  ></iconify-icon>
+                </div>
+                <span class="nav-label">SYSTEM</span>
+              </div>
+              <div class="nav-item" data-media-type="banani-button">
+                <div class="icon-box">
+                  <iconify-icon
+                    icon="lucide:radio"
+                    style="font-size: 20px; color: rgba(255, 255, 255, 0.5)"
+                  ></iconify-icon>
+                </div>
+                <span class="nav-label">SIGNALS</span>
+              </div>
+            </nav>
+
+            <div class="sidebar-footer">
+              <div class="user-profile" data-media-type="banani-button">
+                <img
+                  src="https://storage.googleapis.com/banani-avatars/avatar%2Ffemale%2F25-35%2FEast%20Asian%2F3"
+                  alt="User"
+                  class="avatar-img"
+                />
+                <div class="user-info">
+                  <div class="user-name">OP_ALICE</div>
+                  <div class="user-role">LEVEL 5</div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Main Content Area -->
+          <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+              <div class="breadcrumbs">
+                <span class="crumb">SYS</span>
+                <span class="separator">/</span>
+                <span class="crumb active">MAIN_VIEW</span>
+              </div>
+              <div class="header-actions">
+                <div class="search-bar">
+                  <iconify-icon
+                    icon="lucide:search"
+                    style="font-size: 16px; color: #0ff0fc"
+                  ></iconify-icon>
+                  <span class="search-placeholder">QUERY_DATABASE...</span>
+                </div>
+                <div class="action-btn" data-media-type="banani-button">
+                  <iconify-icon
+                    icon="lucide:bell"
+                    style="font-size: 18px; color: #ff1493"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+              <!-- Hero Status Card -->
+              <div class="card hero-card" data-media-type="banani-button">
+                <div class="card-header">
+                  <h2 class="card-title neon-blue">SYSTEM_STATUS</h2>
+                  <div class="live-indicator">
+                    <span class="blink">●</span> ONLINE
+                  </div>
+                </div>
+                <div class="hero-content">
+                  <div class="metric-large">
+                    <span class="metric-value neon-text-pink">98.4%</span>
+                    <span class="metric-label">OPTIMIZATION</span>
+                  </div>
+                  <div class="graph-lines">
+                    <div class="line" style="width: 60%"></div>
+                    <div class="line" style="width: 80%"></div>
+                    <div class="line" style="width: 45%"></div>
+                    <div class="line" style="width: 90%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Project Cards Row 1 -->
+              <div class="project-grid">
+                <!-- Project 1 -->
+                <div class="card project-card" data-media-type="banani-button">
+                  <div class="card-image-wrapper">
+                    <img
+                      data-aspect-ratio="16:9"
+                      data-query="cyberpunk industrial server room neon lights dark moody"
+                      class="project-img"
+                      src="https://storage.googleapis.com/banani-generated-images/generated-images/c925dcc5-b3fc-4ee3-8f47-719e5eb0d81a.jpg"
+                    />
+                    <div class="card-overlay"></div>
+                  </div>
+                  <div class="card-body">
+                    <div class="tags">
+                      <span class="tag tag-blue">CORE</span>
+                      <span class="tag tag-outline">v2.0.1</span>
+                    </div>
+                    <h3 class="project-title">NEURAL_LINK</h3>
+                    <p class="project-desc">
+                      Direct interface protocols for synaptic transference.
+                    </p>
+                    <div class="card-footer">
+                      <span class="date">UPDATED: 24m ago</span>
+                      <div class="users-stack">
+                        <img
+                          src="https://storage.googleapis.com/banani-avatars/avatar%2Fmale%2F25-35%2FEuropean%2F1"
+                          class="mini-avatar"
+                        />
+                        <img
+                          src="https://storage.googleapis.com/banani-avatars/avatar%2Ffemale%2F18-25%2FAfrican%2F2"
+                          class="mini-avatar"
+                          style="margin-left: -8px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div
+                  class="card project-card glow-active"
+                  data-media-type="banani-button"
+                >
+                  <div class="card-image-wrapper">
+                    <img
+                      data-aspect-ratio="16:9"
+                      data-query="abstract neon geometry glowing circuits dark background"
+                      class="project-img"
+                      src="https://storage.googleapis.com/banani-generated-images/generated-images/3765ef3c-5246-4a22-ba50-70214243ad71.jpg"
+                    />
+                    <div class="card-overlay"></div>
+                  </div>
+                  <div class="card-body">
+                    <div class="tags">
+                      <span class="tag tag-pink">CRITICAL</span>
+                      <span class="tag tag-outline">v0.9.4</span>
+                    </div>
+                    <h3 class="project-title neon-text-blue">VOID_WALKER</h3>
+                    <p class="project-desc">
+                      Experimental traversal algorithms for null-space
+                      navigation.
+                    </p>
+                    <div class="card-footer">
+                      <span class="date">UPDATED: 02m ago</span>
+                      <div class="users-stack">
+                        <img
+                          src="https://storage.googleapis.com/banani-avatars/avatar%2Fmale%2F35-50%2FSouth%20Asian%2F4"
+                          class="mini-avatar"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="card project-card" data-media-type="banani-button">
+                  <div class="card-image-wrapper">
+                    <img
+                      data-aspect-ratio="16:9"
+                      data-query="industrial mechanical arm robot dark factory neon accents"
+                      class="project-img"
+                      src="https://storage.googleapis.com/banani-generated-images/generated-images/850c475c-566f-4456-8bdc-e4c8a9387271.jpg"
+                    />
+                    <div class="card-overlay"></div>
+                  </div>
+                  <div class="card-body">
+                    <div class="tags">
+                      <span class="tag tag-blue">AUTO</span>
+                      <span class="tag tag-outline">v4.1.0</span>
+                    </div>
+                    <h3 class="project-title">MECH_FAB</h3>
+                    <p class="project-desc">
+                      Automated fabrication units for heavy industry deployment.
+                    </p>
+                    <div class="card-footer">
+                      <span class="date">UPDATED: 1h ago</span>
+                      <div class="users-stack">
+                        <img
+                          src="https://storage.googleapis.com/banani-avatars/avatar%2Ffemale%2F25-35%2FHispanic%2F2"
+                          class="mini-avatar"
+                        />
+                        <img
+                          src="https://storage.googleapis.com/banani-avatars/avatar%2Fmale%2F50-65%2FNorth%20American%2F1"
+                          class="mini-avatar"
+                          style="margin-left: -8px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Secondary Modules -->
+              <div class="modules-grid">
+                <!-- Terminal Log -->
+                <div class="card terminal-card" data-media-type="banani-button">
+                  <div class="card-header-small">
+                    <span class="header-text">&gt; SYSTEM_LOG</span>
+                    <iconify-icon
+                      icon="lucide:terminal"
+                      style="font-size: 16px; color: #555"
+                    ></iconify-icon>
+                  </div>
+                  <div class="log-content">
+                    <div class="log-line">
+                      <span class="time">14:02:22</span>
+                      <span class="cmd">INIT_SEQUENCE_START</span>
+                    </div>
+                    <div class="log-line">
+                      <span class="time">14:02:24</span>
+                      <span class="success">[OK]</span> CORE_MODULE_LOADED
+                    </div>
+                    <div class="log-line">
+                      <span class="time">14:02:45</span>
+                      <span class="warn">[WARN]</span> LATENCY_SPIKE_DETECTED
+                    </div>
+                    <div class="log-line">
+                      <span class="time">14:03:01</span>
+                      <span class="cmd">RECALIBRATING...</span>
+                    </div>
+                    <div class="log-line active">
+                      <span class="time">14:03:10</span>
+                      <span class="cursor">_</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="card stats-card" data-media-type="banani-button">
+                  <div class="stat-row">
+                    <div class="stat-label">MEMORY</div>
+                    <div class="stat-bar-container">
+                      <div class="stat-bar-fill pink" style="width: 64%"></div>
+                    </div>
+                    <div class="stat-val">64%</div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-label">CPU</div>
+                    <div class="stat-bar-container">
+                      <div class="stat-bar-fill blue" style="width: 32%"></div>
+                    </div>
+                    <div class="stat-val">32%</div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-label">NETWORK</div>
+                    <div class="stat-bar-container">
+                      <div class="stat-bar-fill blue" style="width: 88%"></div>
+                    </div>
+                    <div class="stat-val">88%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <style id="neon-theme">
+        :root {
+          --color-bg-base: #0c1565;
+          --color-bg-accent: #461659;
+          --color-neon-pink: #ff1493;
+          --color-neon-blue: #0ff0fc;
+          --color-text-main: #ffffff;
+          --color-text-muted: rgba(255, 255, 255, 0.6);
+          --color-card-bg: rgba(12, 21, 101, 0.4);
+          --font-mono: "Courier New", Courier, monospace;
+        }
+
+        .neon-decay-container {
+          width: 100%;
+          min-height: 100vh;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          background-color: var(--color-bg-base);
+        }
+
+        /* Texture Backgrounds */
+        .bg-base {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, #0c1565 0%, #461659 100%);
+          z-index: 0;
+        }
+
+        .bg-texture {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          /* Simulating noise texture overlay */
+          background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJnoiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2cpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+");
+          opacity: 0.4;
+          mix-blend-mode: overlay;
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        .layout-wrapper {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          flex: 1;
+          height: 100vh;
+          overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+          width: 260px;
+          background: rgba(0, 0, 0, 0.3);
+          border-right: 1px solid rgba(15, 240, 252, 0.2);
+          display: flex;
+          flex-direction: column;
+          padding: 24px;
+          backdrop-filter: blur(10px);
+        }
+
+        .brand-mark {
+          margin-bottom: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .neon-logo {
+          font-family: var(--font-mono);
+          font-weight: 700;
+          font-size: 20px;
+          color: var(--color-neon-blue);
+          text-shadow: 0 0 10px var(--color-neon-blue);
+          letter-spacing: 2px;
+        }
+
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          background: var(--color-neon-pink);
+          border-radius: 50%;
+          box-shadow: 0 0 8px var(--color-neon-pink);
+        }
+
+        .nav-menu {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          flex: 1;
+        }
+
+        .nav-item {
+          display: flex;
+          align-items: center;
+          padding: 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s;
+          border: 1px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+          background: rgba(15, 240, 252, 0.1);
+          border-color: rgba(15, 240, 252, 0.3);
+          box-shadow: 0 0 15px rgba(15, 240, 252, 0.1);
+        }
+
+        .nav-item.active .nav-label {
+          color: var(--color-neon-blue);
+          text-shadow: 0 0 5px var(--color-neon-blue);
+        }
+
+        .icon-box {
+          margin-right: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .nav-label {
+          font-family: var(--font-mono);
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--color-text-muted);
+          letter-spacing: 1px;
+        }
+
+        .sidebar-footer {
+          padding-top: 24px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-profile {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .avatar-img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 2px solid var(--color-neon-pink);
+        }
+
+        .user-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 700;
+          color: #fff;
+          letter-spacing: 0.5px;
+        }
+
+        .user-role {
+          font-size: 10px;
+          color: var(--color-neon-pink);
+          font-family: var(--font-mono);
+          margin-top: 2px;
+        }
+
+        /* Main Content */
+        .main-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          overflow-y: auto;
+          padding: 32px 48px;
+          position: relative;
+        }
+
+        /* Header */
+        .top-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 40px;
+        }
+
+        .breadcrumbs {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--font-mono);
+          font-size: 14px;
+          color: var(--color-text-muted);
+        }
+
+        .crumb.active {
+          color: var(--color-neon-blue);
+          text-shadow: 0 0 8px rgba(15, 240, 252, 0.5);
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+        }
+
+        .search-bar {
+          display: flex;
+          align-items: center;
+          background: rgba(0, 0, 0, 0.4);
+          border: 1px solid rgba(15, 240, 252, 0.3);
+          padding: 8px 16px;
+          border-radius: 2px;
+          gap: 10px;
+          width: 240px;
+        }
+
+        .search-placeholder {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          color: rgba(15, 240, 252, 0.6);
+        }
+
+        .action-btn {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(255, 20, 147, 0.3);
+          background: rgba(255, 20, 147, 0.1);
+          border-radius: 2px;
+        }
+
+        /* Grid System */
+        .dashboard-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+          max-width: 1200px;
+        }
+
+        .card {
+          background: var(--color-card-bg);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(10px);
+          border-radius: 2px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .card:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: transparent;
+          transition: background 0.3s;
+        }
+
+        .card:hover {
+          border-color: var(--color-neon-blue);
+          box-shadow:
+            0 0 20px rgba(15, 240, 252, 0.2),
+            inset 0 0 20px rgba(15, 240, 252, 0.1);
+        }
+
+        .card:hover:before {
+          background: var(--color-neon-blue);
+        }
+
+        /* Hero Card */
+        .hero-card {
+          padding: 32px;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          background: linear-gradient(
+            90deg,
+            rgba(12, 21, 101, 0.6) 0%,
+            rgba(70, 22, 89, 0.6) 100%
+          );
+          border: 1px solid rgba(15, 240, 252, 0.4);
+        }
+
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+        }
+
+        .card-title {
+          margin: 0;
+          font-family: var(--font-mono);
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 1px;
+        }
+
+        .neon-blue {
+          color: var(--color-neon-blue);
+          text-shadow: 0 0 12px rgba(15, 240, 252, 0.6);
+        }
+
+        .neon-text-pink {
+          color: var(--color-neon-pink);
+          text-shadow: 0 0 12px rgba(255, 20, 147, 0.6);
+        }
+
+        .live-indicator {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--font-mono);
+          font-size: 12px;
+          color: #00ff66;
+          text-shadow: 0 0 5px #00ff66;
+        }
+
+        .hero-content {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+        }
+
+        .metric-large {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .metric-value {
+          font-size: 56px;
+          font-weight: 700;
+          line-height: 1;
+        }
+
+        .metric-label {
+          font-family: var(--font-mono);
+          font-size: 14px;
+          color: var(--color-text-muted);
+          margin-top: 8px;
+        }
+
+        .graph-lines {
+          display: flex;
+          gap: 6px;
+          align-items: flex-end;
+          height: 40px;
+        }
+
+        .line {
+          width: 4px;
+          background: var(--color-neon-blue);
+          box-shadow: 0 0 8px var(--color-neon-blue);
+          height: 100%; /* controlled by style inline */
+          animation: flicker 4s infinite;
+        }
+        .line:nth-child(2) {
+          animation-delay: 0.5s;
+          height: 100% !important;
+        }
+        .line:nth-child(3) {
+          animation-delay: 1.2s;
+          height: 100% !important;
+        }
+        .line:nth-child(4) {
+          animation-delay: 0.2s;
+          height: 100% !important;
+        }
+
+        /* Project Grid */
+        .project-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+
+        .project-card {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .glow-active {
+          border-color: var(--color-neon-pink);
+          box-shadow: 0 0 25px rgba(255, 20, 147, 0.15);
+        }
+        .glow-active:before {
+          background: var(--color-neon-pink);
+        }
+
+        .card-image-wrapper {
+          height: 160px;
+          position: relative;
+          overflow: hidden;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .project-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.8;
+          transition: transform 0.4s;
+        }
+
+        .card:hover .project-img {
+          transform: scale(1.05);
+        }
+
+        .card-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            to top,
+            rgba(12, 21, 101, 0.9),
+            transparent
+          );
+        }
+
+        .card-body {
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+
+        .tags {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .tag {
+          font-family: var(--font-mono);
+          font-size: 10px;
+          padding: 2px 6px;
+          border-radius: 2px;
+          font-weight: 700;
+        }
+
+        .tag-blue {
+          background: rgba(15, 240, 252, 0.2);
+          color: var(--color-neon-blue);
+          border: 1px solid rgba(15, 240, 252, 0.4);
+        }
+
+        .tag-pink {
+          background: rgba(255, 20, 147, 0.2);
+          color: var(--color-neon-pink);
+          border: 1px solid rgba(255, 20, 147, 0.4);
+        }
+
+        .tag-outline {
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        .project-title {
+          font-size: 18px;
+          margin: 0 0 8px 0;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+
+        .neon-text-blue {
+          color: var(--color-neon-blue);
+          text-shadow: 0 0 8px rgba(15, 240, 252, 0.6);
+        }
+
+        .project-desc {
+          font-size: 13px;
+          color: var(--color-text-muted);
+          line-height: 1.5;
+          margin: 0 0 20px 0;
+          flex: 1;
+        }
+
+        .card-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 16px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .date {
+          font-size: 11px;
+          font-family: var(--font-mono);
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        .mini-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          border: 1px solid #000;
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 24px;
+        }
+
+        .terminal-card {
+          padding: 20px;
+          min-height: 180px;
+          background: #000;
+          border: 1px solid #333;
+        }
+
+        .card-header-small {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 16px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid #222;
+        }
+
+        .header-text {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          color: #888;
+        }
+
+        .log-content {
+          font-family: var(--font-mono);
+          font-size: 13px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .log-line {
+          display: flex;
+          gap: 12px;
+          color: #aaa;
+        }
+
+        .time {
+          color: #555;
+        }
+
+        .cmd {
+          color: #ddd;
+        }
+
+        .success {
+          color: #00ff66;
+        }
+
+        .warn {
+          color: #ffaa00;
+        }
+
+        .stats-card {
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 20px;
+        }
+
+        .stat-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .stat-label {
+          width: 70px;
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--color-text-muted);
+        }
+
+        .stat-bar-container {
+          flex: 1;
+          height: 6px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        .stat-bar-fill {
+          height: 100%;
+          box-shadow: 0 0 8px currentColor;
+        }
+        .stat-bar-fill.pink {
+          background: var(--color-neon-pink);
+          color: var(--color-neon-pink);
+        }
+        .stat-bar-fill.blue {
+          background: var(--color-neon-blue);
+          color: var(--color-neon-blue);
+        }
+
+        .stat-val {
+          width: 32px;
+          text-align: right;
+          font-family: var(--font-mono);
+          font-size: 12px;
+          color: #fff;
+        }
+
+        /* Utility Animations (Simulated Static) */
+        .blink {
+          animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.3;
+          }
+        }
+      </style>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #0c1565;
+      --foreground: #e6e7ea;
+      --border: #ffffff2d;
+      --input: #0a0c13;
+      --primary: #0ff0fc;
+      --primary-foreground: #041021;
+      --secondary: #461659;
+      --secondary-foreground: #f7e9f6;
+      --muted: #11121a;
+      --muted-foreground: #9ea0a8;
+      --success: #0ec48a;
+      --success-foreground: #041021;
+      --accent: #ff1493;
+      --accent-foreground: #1b0018;
+      --destructive: #ff3b30;
+      --destructive-foreground: #1b0018;
+      --warning: #ffb86b;
+      --warning-foreground: #1b0018;
+      --card: #07102a;
+      --card-foreground: #e8e9ef;
+      --sidebar: #08102b;
+      --sidebar-foreground: #c9cbe0;
+      --sidebar-primary: #12214a;
+      --sidebar-primary-foreground: #0ff0fc;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Space Grotesk;
+    }
+  </style>
+</div>

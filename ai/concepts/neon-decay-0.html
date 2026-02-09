@@ -1,0 +1,658 @@
+<div
+  class="export-wrapper"
+  style="
+    width: 1440px;
+    min-height: 812px;
+    position: relative;
+    font-family: var(--font-family-body);
+    background-color: var(--background);
+  "
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&family=Geist:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=PT+Serif:wght@400;700&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Shantell+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Neon Decay</title>
+      <style id="theme-vars">
+        :root {
+          --bg-base-1: #0c1565; /* Indian Blue */
+          --bg-base-2: #461659; /* Scarlet Gum */
+          --neon-pink: #ff1493;
+          --neon-blue: #0ff0fc;
+          --text-main: #e0e0e0;
+          --card-bg: rgba(12, 21, 101, 0.4);
+          --font-display: "Courier New", Courier, monospace;
+          --font-body:
+            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+            Arial, sans-serif;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        .export-wrapper {
+          margin: 0;
+          background: linear-gradient(
+            135deg,
+            var(--bg-base-1),
+            var(--bg-base-2)
+          );
+          color: var(--text-main);
+          font-family: var(--font-body);
+          min-height: 100vh;
+          overflow-x: hidden;
+          position: relative;
+        }
+
+        /* Texture Overlay */
+        .texture-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          opacity: 0.4;
+          mix-blend-mode: multiply;
+          z-index: 0;
+          background: transparent;
+        }
+      </style>
+      <style id="layout-styles">
+        .app-container {
+          position: relative;
+          z-index: 1;
+          max-width: 1440px;
+          margin: 0 auto;
+          padding: 40px;
+          display: flex;
+          flex-direction: column;
+          gap: 48px;
+        }
+
+        /* Header */
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          border-bottom: 1px solid rgba(15, 240, 252, 0.3);
+          padding-bottom: 24px;
+        }
+
+        .header-title-group {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .header-eyebrow {
+          font-family: var(--font-display);
+          color: var(--neon-blue);
+          font-size: 14px;
+          letter-spacing: 2px;
+          text-shadow: 0 0 8px var(--neon-blue);
+          opacity: 0.9;
+        }
+
+        .header-title {
+          font-size: 48px;
+          font-weight: 800;
+          margin: 0;
+          text-transform: uppercase;
+          letter-spacing: -1px;
+          color: #fff;
+          text-shadow:
+            2px 2px 0px var(--bg-base-2),
+            0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .header-stats {
+          display: flex;
+          gap: 32px;
+          font-family: var(--font-display);
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          align-items: flex-end;
+        }
+
+        .stat-value {
+          color: var(--neon-pink);
+          font-weight: bold;
+          text-shadow: 0 0 5px var(--neon-pink);
+        }
+
+        /* Grid */
+        .project-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 32px;
+        }
+
+        /* Sidebar/Filter Mockup (Top) */
+        .filter-bar {
+          display: flex;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+
+        .filter-pill {
+          padding: 8px 16px;
+          border: 1px solid rgba(15, 240, 252, 0.3);
+          border-radius: 4px;
+          font-family: var(--font-display);
+          font-size: 12px;
+          color: var(--neon-blue);
+          background: rgba(12, 21, 101, 0.3);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .filter-pill.active {
+          background: rgba(15, 240, 252, 0.15);
+          border-color: var(--neon-blue);
+          box-shadow: 0 0 10px rgba(15, 240, 252, 0.2);
+        }
+      </style>
+      <style id="card-styles">
+        .project-card {
+          background: var(--card-bg);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          overflow: hidden;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          /* Simulating the 'Lit' integration look with a slight glow by default */
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
+        }
+
+        .project-card:nth-child(2) {
+          /* Simulating a 'hovered' or active state for visual variety */
+          border-color: var(--neon-pink);
+          box-shadow:
+            0 0 20px rgba(255, 20, 147, 0.4),
+            inset 0 0 20px rgba(255, 20, 147, 0.1);
+        }
+
+        .card-image-container {
+          height: 200px;
+          width: 100%;
+          position: relative;
+          overflow: hidden;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: contrast(1.2) saturate(1.2);
+        }
+
+        .card-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(to top, var(--bg-base-1), transparent);
+          opacity: 0.6;
+        }
+
+        .card-content {
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          flex: 1;
+        }
+
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+        }
+
+        .card-title {
+          font-size: 20px;
+          font-weight: 700;
+          color: #fff;
+          margin: 0;
+          letter-spacing: 0.5px;
+        }
+
+        .card-subtitle {
+          font-family: var(--font-display);
+          font-size: 12px;
+          color: var(--neon-blue);
+          opacity: 0.8;
+          margin-top: 4px;
+          display: block;
+        }
+
+        .card-status {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: var(--neon-blue);
+          box-shadow: 0 0 8px var(--neon-blue);
+        }
+
+        .project-card:nth-child(2) .card-status {
+          background: var(--neon-pink);
+          box-shadow: 0 0 8px var(--neon-pink);
+        }
+
+        .project-card:nth-child(2) .card-title {
+          text-shadow: 0 0 8px var(--neon-pink);
+        }
+
+        .card-desc {
+          font-size: 14px;
+          line-height: 1.6;
+          color: rgba(224, 224, 224, 0.8);
+          margin: 0;
+          flex: 1;
+        }
+
+        .card-footer {
+          margin-top: auto;
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .tag {
+          font-family: var(--font-display);
+          font-size: 11px;
+          padding: 4px 8px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.6);
+          border-radius: 2px;
+        }
+
+        .action-button {
+          width: 100%;
+          padding: 12px;
+          margin-top: 8px;
+          background: transparent;
+          border: 1px solid var(--neon-blue);
+          color: var(--neon-blue);
+          font-family: var(--font-display);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.2s;
+        }
+
+        .project-card:nth-child(2) .action-button {
+          border-color: var(--neon-pink);
+          color: var(--neon-pink);
+          background: rgba(255, 20, 147, 0.1);
+          box-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
+        }
+      </style>
+    </head>
+    <body>
+      <!-- Procedural Texture SVG Filter -->
+      <svg
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 0;
+          height: 0;
+          pointer-events: none;
+        "
+      >
+        <filter id="noiseFilter">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.8"
+            numOctaves="3"
+            stitchTiles="stitch"
+          ></feTurbulence>
+          <feColorMatrix type="saturate" values="0"></feColorMatrix>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.15"></feFuncA>
+          </feComponentTransfer>
+        </filter>
+      </svg>
+      <div class="texture-overlay" style="filter: url(#noiseFilter)"></div>
+
+      <div class="app-container">
+        <header class="header">
+          <div class="header-title-group">
+            <span class="header-eyebrow"
+              >/// TERMINAL_ACCESS_GRANTED // V.2.0.4</span
+            >
+            <h1 class="header-title">Project // Decay</h1>
+          </div>
+          <div class="header-stats">
+            <div class="stat-item">
+              <span>SYSTEM_LOAD</span>
+              <span class="stat-value">34%</span>
+            </div>
+            <div class="stat-item">
+              <span>NET_STATUS</span>
+              <span
+                class="stat-value"
+                style="
+                  color: var(--neon-blue);
+                  text-shadow: 0 0 5px var(--neon-blue);
+                "
+                >CONNECTED</span
+              >
+            </div>
+            <div class="stat-item">
+              <span>UPTIME</span>
+              <span class="stat-value" style="color: #fff">48:12:09</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="filter-bar">
+          <div class="filter-pill active" data-media-type="banani-button">
+            <div
+              style="
+                width: 6px;
+                height: 6px;
+                background: currentColor;
+                border-radius: 50%;
+              "
+            ></div>
+            ALL_SYSTEMS
+          </div>
+          <div class="filter-pill" data-media-type="banani-button">
+            NETWORKS
+          </div>
+          <div class="filter-pill" data-media-type="banani-button">
+            HARDWARE
+          </div>
+          <div class="filter-pill" data-media-type="banani-button">
+            PROTOCOLS
+          </div>
+        </div>
+
+        <div class="project-grid">
+          <!-- Card 1 -->
+          <article class="project-card">
+            <div class="card-image-container">
+              <img
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/70bba541-3967-44c8-b180-b8c431105fb9.jpg"
+                data-aspect-ratio="16:9"
+                data-query="cyberpunk server room blue aesthetic dark industrial"
+                class="card-image"
+                alt="Neural Link"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">NEURAL_LINK</h2>
+                  <span class="card-subtitle">ID: 8492-X // DEEP_DIVE</span>
+                </div>
+                <div class="card-status"></div>
+              </div>
+              <p class="card-desc">
+                Direct cortical interface protocols for low-latency data
+                transmission. Optimized for deep wave synchronization.
+              </p>
+              <div class="card-footer">
+                <span class="tag">BIO_HACK</span>
+                <span class="tag">L2_LAYER</span>
+              </div>
+              <button class="action-button" data-media-type="banani-button">
+                INITIALIZE
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 2 (Highlighted/Active State) -->
+          <article class="project-card">
+            <div class="card-image-container">
+              <img
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/9e0921c5-5174-4d9f-a01b-50597560d9fb.jpg"
+                data-aspect-ratio="16:9"
+                data-query="neon pink glitch art abstract geometry dark void"
+                class="card-image"
+                alt="Void Walker"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">VOID_WALKER</h2>
+                  <span class="card-subtitle">ID: 7710-Z // ANOMALY</span>
+                </div>
+                <div class="card-status"></div>
+              </div>
+              <p class="card-desc">
+                Experimental traversal algorithms for navigating fragmented data
+                sectors. High instability detected.
+              </p>
+              <div class="card-footer">
+                <span
+                  class="tag"
+                  style="
+                    border-color: rgba(255, 20, 147, 0.3);
+                    color: var(--neon-pink);
+                  "
+                  >UNSTABLE</span
+                >
+                <span class="tag">TRAVERSAL</span>
+              </div>
+              <button class="action-button" data-media-type="banani-button">
+                FORCE_STOP
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="project-card">
+            <div class="card-image-container">
+              <img
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/5f67c4fe-adff-4400-aca1-46d3d1223c09.jpg"
+                data-aspect-ratio="16:9"
+                data-query="industrial machinery schematic blueprint dark blue"
+                class="card-image"
+                alt="Iron Core"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">IRON_CORE</h2>
+                  <span class="card-subtitle"
+                    >ID: 1102-B // INFRASTRUCTURE</span
+                  >
+                </div>
+                <div class="card-status"></div>
+              </div>
+              <p class="card-desc">
+                Legacy hardware integration systems. Maintaining stability
+                across outdated architectural frameworks.
+              </p>
+              <div class="card-footer">
+                <span class="tag">LEGACY</span>
+                <span class="tag">MAINTENANCE</span>
+              </div>
+              <button class="action-button" data-media-type="banani-button">
+                DIAGNOSE
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="project-card">
+            <div class="card-image-container">
+              <img
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/6f91b893-3cc7-41db-922d-dbd02883dafd.jpg"
+                data-aspect-ratio="16:9"
+                data-query="digital surveillance grid map dark hud"
+                class="card-image"
+                alt="Ghost Grid"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">GHOST_GRID</h2>
+                  <span class="card-subtitle">ID: 9940-Q // SURVEILLANCE</span>
+                </div>
+                <div class="card-status"></div>
+              </div>
+              <p class="card-desc">
+                Passive monitoring array for detecting unauthorized network
+                intrusions in the peripheral zones.
+              </p>
+              <div class="card-footer">
+                <span class="tag">SECURITY</span>
+                <span class="tag">PASSIVE</span>
+              </div>
+              <button class="action-button" data-media-type="banani-button">
+                VIEW_LOGS
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="project-card">
+            <div class="card-image-container">
+              <img
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/946923c3-1fa9-4761-ac91-af47ef78c6d3.jpg"
+                data-aspect-ratio="16:9"
+                data-query="cyborg arm mechanical detail dark lighting"
+                class="card-image"
+                alt="Synth Limb"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">SYNTH_LIMB</h2>
+                  <span class="card-subtitle">ID: 3321-M // PROSTHETICS</span>
+                </div>
+                <div class="card-status"></div>
+              </div>
+              <p class="card-desc">
+                Next-generation haptic feedback loops for synthetic appendages.
+                Improved sensory input processing.
+              </p>
+              <div class="card-footer">
+                <span class="tag">MEDICAL</span>
+                <span class="tag">ROBOTICS</span>
+              </div>
+              <button class="action-button" data-media-type="banani-button">
+                CALIBRATE
+              </button>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="project-card">
+            <div class="card-image-container">
+              <img
+                src="https://storage.googleapis.com/banani-generated-images/generated-images/0d2192f9-f67e-4c97-b151-e26313f9785f.jpg"
+                data-aspect-ratio="16:9"
+                data-query="glowing data stream code rain matrix style"
+                class="card-image"
+                alt="Data Flux"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">DATA_FLUX</h2>
+                  <span class="card-subtitle">ID: 0029-A // ANALYTICS</span>
+                </div>
+                <div
+                  class="card-status"
+                  style="background: #555; box-shadow: none"
+                ></div>
+              </div>
+              <p class="card-desc">
+                Real-time data stream processing. Currently offline for
+                scheduled maintenance cycles.
+              </p>
+              <div class="card-footer">
+                <span class="tag">OFFLINE</span>
+                <span class="tag">BACKEND</span>
+              </div>
+              <button
+                class="action-button"
+                data-media-type="banani-button"
+                style="border-color: #555; color: #777"
+              >
+                UNAVAILABLE
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </body>
+  </html>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style>
+    :root {
+      --background: #0c1565;
+      --foreground: #e6e8f2;
+      --border: #ffffff2d;
+      --input: #0b123f;
+      --primary: #0ff0fc;
+      --primary-foreground: #051018;
+      --secondary: #461659;
+      --secondary-foreground: #f6e9f5;
+      --muted: #1b1c2a;
+      --muted-foreground: #9aa0b8;
+      --success: #00d28a;
+      --success-foreground: #02140a;
+      --accent: #ff1493;
+      --accent-foreground: #120017;
+      --destructive: #ff5c6c;
+      --destructive-foreground: #2a0a0d;
+      --warning: #ffb86b;
+      --warning-foreground: #2a1608;
+      --card: #071033;
+      --card-foreground: #e9ecf8;
+      --sidebar: #06102a;
+      --sidebar-foreground: #bfc7ea;
+      --sidebar-primary: #0ff0fc;
+      --sidebar-primary-foreground: #041217;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+      --font-family-body: Inter;
+    }
+  </style>
+</div>

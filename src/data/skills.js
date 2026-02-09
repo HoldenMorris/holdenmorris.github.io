@@ -1,11 +1,14 @@
 export const skills = [
   { name: 'Node.js',       category: 'runtime',  proficiency: 95 },
+  { name: 'Golang',        category: 'language',  proficiency: 95 },
   { name: 'JavaScript',    category: 'language',  proficiency: 95 },
   { name: 'TypeScript',    category: 'language',  proficiency: 80 },
   { name: 'PHP',           category: 'language',  proficiency: 85 },
   { name: 'Python',        category: 'language',  proficiency: 70 },
   { name: 'SQL',           category: 'language',  proficiency: 85 },
 
+  { name: 'Vue3',          category: 'frontend',  proficiency: 80 },
+  { name: 'HTMX',          category: 'frontend',  proficiency: 80 },
   { name: 'Lit',           category: 'frontend',  proficiency: 80 },
   { name: 'Web Components', category: 'frontend', proficiency: 85 },
   { name: 'HTML/CSS',      category: 'frontend',  proficiency: 90 },

@@ -27,6 +27,11 @@ export class PortfolioHero extends LitElement {
       z-index: 0;
     }
 
+    .fade-out-bottom {
+      mask-image: linear-gradient(to bottom, white 60%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, white 60%, transparent 100%);
+    }
+
     /* Dark wave ambient gradient behind content */
     .hero-content {
       position: relative;
@@ -206,7 +211,7 @@ export class PortfolioHero extends LitElement {
     window.addEventListener('resize', resize);
 
     const chars = '{}[]<>()=>/;:.0123456789abcdef';
-    const fontSize = 14;
+    const fontSize = 28;
     const columns = Math.floor(canvas.width / 20);
     const drops = new Array(columns).fill(1);
 
@@ -276,7 +281,7 @@ export class PortfolioHero extends LitElement {
   render() {
     return html`
       <section id="hero">
-        <canvas aria-hidden="true"></canvas>
+        <canvas class="fade-out-bottom" aria-hidden="true"></canvas>
         <div class="hero-content">
           <p class="terminal-prefix">$ whoami</p>
           <h1>${this._typedName}<span class="cursor">_</span></h1>

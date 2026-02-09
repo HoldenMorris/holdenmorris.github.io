@@ -769,7 +769,7 @@ export class PortfolioProjects extends RevealMixin(LitElement) {
             <span class="dot green"></span>
           </div>
           <span class="card-filename"
-            >${project.title.toLowerCase().replace(/\s+/g, '-')}.${project.category === 'professional' ? 'ts' : 'js'}</span
+            >${project.title.toLowerCase().replace(/\s+/g, '-')}</span
           >
           <span class="category-badge ${project.category}">
             ${project.category === 'professional' ? project.company || 'Pro' : 'OSS'}
